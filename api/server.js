@@ -1,31 +1,38 @@
-// See https://github.com/typicode/json-server#module
-const jsonServer = require('json-server')
+const jsonServer = require('json-server');
+const fs = require('fs');
+const path = require('path');
+const server = jsonServer.create();
+const middlewares = jsonServer.defaults();
+const router = jsonServer.router('db.json');
 
-const server = jsonServer.create()
+server.use(middlewares);
 
-// Uncomment to allow write operations
-// const fs = require('fs')
-// const path = require('path')
-// const filePath = path.join('db.json')
-// const data = fs.readFileSync(filePath, "utf-8");
-// const db = JSON.parse(data);
-// const router = jsonServer.router(db)
+// Middleware to parse JSON body
+server.use(jsonServer.bodyParser);
 
-// Comment out to allow write operations
-const router = jsonServer.router('db.json')
+// Custom route to handle POST requests
+server.post('/api/posts', (req, res) => {
+    // Assuming req.body contains the new post object
+    const data = JSON.parse(fs.readFileSync('db.json', 'utf8'));
+    const newPost = req.body;
+    data.posts.push(newPost);
+    fs.writeFileSync('db.json', JSON.stringify(data, null, 2));
+    res.status(201).json(newPost);
+});
 
-const middlewares = jsonServer.defaults()
+// Custom route to handle DELETE requests
+server.delete('/api/posts/:id', (req, res) => {
+    const data = JSON.parse(fs.readFileSync('db.json', 'utf8'));
+    const postId = parseInt(req.params.id);
+    data.posts = data.posts.filter(post => post.id !== postId);
+    fs.writeFileSync('db.json', JSON.stringify(data, null, 2));
+    res.status(200).json({});
+});
 
-server.use(middlewares)
-// Add this before server.use(router)
-server.use(jsonServer.rewriter({
-    '/api/*': '/$1',
-    '/blog/:resource/:id/show': '/:resource/:id'
-}))
-server.use(router)
+server.use(router);
+
 server.listen(3000, () => {
-    console.log('JSON Server is running')
-})
+    console.log('JSON Server is running');
+});
 
-// Export the Server API
-module.exports = server
+module.exports = server;
