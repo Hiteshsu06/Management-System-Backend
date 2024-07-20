@@ -11,7 +11,7 @@ server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
 // Custom route to handle POST requests
-server.post('/api/company', (req, res) => {
+server.post('/company', (req, res) => {
     // Assuming req.body contains the new post object
     const data = JSON.parse(fs.readFileSync('db.json', 'utf8'));
     const newPost = req.body;
@@ -21,7 +21,7 @@ server.post('/api/company', (req, res) => {
 });
 
 // Custom route to handle DELETE requests
-server.delete('/api/company/:id', (req, res) => {
+server.delete('/company/:id', (req, res) => {
     const data = JSON.parse(fs.readFileSync('db.json', 'utf8'));
     const postId = parseInt(req.params.id);
     data.posts = data.posts.filter(post => post.id !== postId);
