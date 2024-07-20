@@ -15,7 +15,7 @@ server.post('/company', (req, res) => {
     // Assuming req.body contains the new post object
     const data = JSON.parse(fs.readFileSync('db.json', 'utf8'));
     const newPost = req.body;
-    data.posts.push(newPost);
+    data.company.push(newPost);
     fs.writeFileSync('db.json', JSON.stringify(data, null, 2));
     res.status(201).json(newPost);
 });
@@ -24,7 +24,7 @@ server.post('/company', (req, res) => {
 server.delete('/company/:id', (req, res) => {
     const data = JSON.parse(fs.readFileSync('db.json', 'utf8'));
     const postId = parseInt(req.params.id);
-    data.posts = data.posts.filter(post => post.id !== postId);
+    data.company = data.company.filter(post => post.id !== postId);
     fs.writeFileSync('db.json', JSON.stringify(data, null, 2));
     res.status(200).json({});
 });
