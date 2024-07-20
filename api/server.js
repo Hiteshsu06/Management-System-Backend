@@ -12,20 +12,28 @@ server.use(jsonServer.bodyParser);
 
 // Custom route to handle POST requests
 server.post('/company', (req, res) => {
-    // Assuming req.body contains the new post object
     const data = JSON.parse(fs.readFileSync('db.json', 'utf8'));
-    const newPost = req.body;
-    data.company.push(newPost);
+    const newCompany = req.body;
+    
+    // Generate a new ID (assuming IDs are unique and sequential)
+    newCompany.id = (data.company.length + 1).toString(); 
+    
+    data.company.push(newCompany);
     fs.writeFileSync('db.json', JSON.stringify(data, null, 2));
-    res.status(201).json(newPost);
+    
+    res.status(201).json(newCompany);
 });
 
 // Custom route to handle DELETE requests
 server.delete('/company/:id', (req, res) => {
     const data = JSON.parse(fs.readFileSync('db.json', 'utf8'));
-    const postId = parseInt(req.params.id);
-    data.company = data.company.filter(post => post.id !== postId);
+    const companyId = req.params.id;
+    
+    // Remove the company with the specified ID
+    data.company = data.company.filter(company => company.id !== companyId);
+    
     fs.writeFileSync('db.json', JSON.stringify(data, null, 2));
+    
     res.status(200).json({});
 });
 
