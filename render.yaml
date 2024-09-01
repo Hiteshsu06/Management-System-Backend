@@ -1,24 +1,18 @@
 databases:
-  - name: mysite
-    databaseName: mysite
-    user: mysite
-    plan: free
+  - name: app_name
+    databaseName: app_name
+    user: app_name
 
 services:
   - type: web
-    name: mysite
-    runtime: ruby
-    plan: free
+    name: app_name
+    env: ruby
     buildCommand: "./bin/render-build.sh"
-    # preDeployCommand: "bundle exec rails db:migrate" # preDeployCommand only available on paid instance types
-    startCommand: "bundle exec rails server"
+    startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: mysite
+          name: app_name
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
-      - key: WEB_CONCURRENCY
-        value: 2 # sensible default
-        
