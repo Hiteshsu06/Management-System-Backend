@@ -81,5 +81,9 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+ <<: *default
+ database: example_app_ror_production
+ username: example_app_ror
+ host: <%= ENV[“WHERE_S_THE_MONEY_DATABASE_HOST”] %>
+ username: <%= ENV[“WHERE_S_THE_MONEY_DATABASE_NAME”] %>
+ password: <%= ENV[“WHERE_S_THE_MONEY_DATABASE_PASSWORD”] %>
