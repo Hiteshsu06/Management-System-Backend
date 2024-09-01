@@ -3,9 +3,11 @@
 set -o errexit
 
 bundle install
-
-# If you're using a Free instance type, you need to
-# perform database migrations in the build command.
-# Uncomment the following line:
-
-bundle exec rails db:migrate
+# clean
+rm -rf public
+# build
+npm install --prefix client && npm run build --prefix client
+# migrate
+bundle exec rake db:migrate
+# postbuild
+cp -a client/build/. public/
