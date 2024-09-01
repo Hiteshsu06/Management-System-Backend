@@ -1,6 +1,6 @@
 databases:
-  - name: management_system
-    databaseName: management_system
+  - name: mysite
+    databaseName: mysite
     user: mysite
     plan: free
 
@@ -10,7 +10,8 @@ services:
     runtime: ruby
     plan: free
     buildCommand: "./bin/render-build.sh"
-    startCommand:  "bundle exec puma -C config/puma.rb"
+    # preDeployCommand: "bundle exec rails db:migrate" # preDeployCommand only available on paid instance types
+    startCommand: "bundle exec rails server"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -18,3 +19,5 @@ services:
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
+      - key: WEB_CONCURRENCY
+        value: 2 # sensible default
