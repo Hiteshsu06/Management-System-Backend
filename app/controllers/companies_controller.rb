@@ -3,28 +3,47 @@ class CompaniesController < ApplicationController
 
   def index
     @companies = Company.where(user_id: current_user.id)
-    render json: @companies
+    if @companies
+      render json: @companies
+    else
+      render json: { errors: @companies.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def create
-    company = Company.create(company_params.merge(user_id: current_user.id))
-    render json: company
+    company = Company.new(company_params.merge(user_id: current_user.id))
+    if company.save
+      render json: company, status: :created
+    else
+      render json: { errors: company.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def show
     @company = Company.find(params[:id])
-    render json: @company
+    if @company
+      render json: @company
+    else
+      render json: { errors: @company.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def update
     company = Company.find(params[:id])
-    company.update(company_params)
-    render json: company
+    if company.update(company_params)
+      render json: company
+    else
+      render json: { errors: company.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    Company.destroy(params[:id])
-    head :ok
+    company = Company.find_by(id: params[:id])
+    if company.destroy
+      head :ok
+    else
+      render json: { errors: company.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   private
