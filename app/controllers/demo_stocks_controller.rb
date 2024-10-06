@@ -3,7 +3,7 @@ class DemoStocksController < ApplicationController
 
   def index
     user_companies = DemoCompany.where(user_id: current_user.id)
-    @stocks = Stock.where(company_id: user_companies.pluck(:id))
+    @stocks = Stock.where(demo_company_id: user_companies.pluck(:id))
     if @stocks
       render json: @stocks
     else
