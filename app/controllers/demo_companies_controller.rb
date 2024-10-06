@@ -1,8 +1,8 @@
-class CompaniesController < ApplicationController
+class DemoCompaniesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @companies = Company.where(user_id: current_user.id)
+    @companies = DemoCompany.where(user_id: current_user.id)
     if @companies
       render json: @companies
     else
@@ -11,7 +11,7 @@ class CompaniesController < ApplicationController
   end
 
   def create
-    company = Company.new(company_params.merge(user_id: current_user.id))
+    company = DemoCompany.new(company_params.merge(user_id: current_user.id))
     if company.save
       render json: company, status: :created
     else
@@ -20,7 +20,7 @@ class CompaniesController < ApplicationController
   end
 
   def show
-    @company = Company.find(params[:id])
+    @company = DemoCompany.find(params[:id])
     if @company
       render json: @company
     else
@@ -29,7 +29,7 @@ class CompaniesController < ApplicationController
   end
 
   def update
-    company = Company.find(params[:id])
+    company = DemoCompany.find(params[:id])
     if company.update(company_params)
       render json: company
     else
@@ -38,7 +38,7 @@ class CompaniesController < ApplicationController
   end
 
   def destroy
-    company = Company.find_by(id: params[:id])
+    company = DemoCompany.find_by(id: params[:id])
     if company.destroy
       head :ok
     else

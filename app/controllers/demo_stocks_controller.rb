@@ -2,7 +2,7 @@ class DemoStocksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    user_companies = Company.where(user_id: current_user.id)
+    user_companies = DemoCompany.where(user_id: current_user.id)
     @stocks = Stock.where(company_id: user_companies.pluck(:id))
     if @stocks
       render json: @stocks
@@ -22,7 +22,7 @@ class DemoStocksController < ApplicationController
 
   def show
     @stock = Stock.find(params[:id])
-    @company_details = Company.find(@stock.company_id)
+    @company_details = DemoCompany.find(@stock.company_id)
     if @stock
       render json: @stock.merge(company: @company_details.as_json)
     else
