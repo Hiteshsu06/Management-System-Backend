@@ -1,21 +1,18 @@
-class StocksController < ApplicationController
+class DemoStocksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @stocks = Stock.where(user_id: current_user.id)
+    user_companies = Company.where(user_id: current_user.id)
+    @stocks = Stock.where(company_id: user_companies.pluck(:id))
     if @stocks
-      stocks_data = @stocks.map do |stock|
-        StockSerializer.new(stock).serializable_hash[:data][:attributes]
-      end
-      
-      render json: stocks_data
+      render json: @stocks
     else
       render json: { errors: @stocks.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def create
-    sector = Stock.new(stock_params.merge(user_id: current_user.id))
+    stock = Stock.new(stock_params)
     if stock.save
       render json: stock, status: :created
     else
@@ -25,8 +22,9 @@ class StocksController < ApplicationController
 
   def show
     @stock = Stock.find(params[:id])
+    @company_details = Company.find(@stock.company_id)
     if @stock
-      render json: @stock
+      render json: @stock.merge(company: @company_details.as_json)
     else
       render json: { errors: @stock.errors.full_messages }, status: :unprocessable_entity
     end
@@ -53,6 +51,6 @@ class StocksController < ApplicationController
   private
 
   def stock_params
-    params.permit(:name, :price, :stock_short_term_chart, :stock_long_term_chart)
+    params.permit(:category, :brand_name, :model_number, :stock_name, :product_qty, :buy_price, :sell_price, :gst_number, :company_id)
   end
 end

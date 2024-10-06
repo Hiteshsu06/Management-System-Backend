@@ -43,3 +43,5 @@ group :development, :test do
 end
 
 
+
+gem "jsonapi-serializer", "~> 2.2"

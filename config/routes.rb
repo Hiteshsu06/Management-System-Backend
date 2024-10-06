@@ -3,6 +3,10 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-  resources :companies
+  resources :demo_companies
+  resources :demo_stocks
+  
   resources :stocks
+  resources :sector_masters
+  resources :indices
 end

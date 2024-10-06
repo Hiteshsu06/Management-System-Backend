@@ -1,5 +1,9 @@
 require "active_support/core_ext/integer/time"
 
+Rails.application.routes.default_url_options = {
+  host: 'https://management-system-backend-94z3.onrender.com'
+}
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
