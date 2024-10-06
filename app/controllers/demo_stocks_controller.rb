@@ -3,7 +3,7 @@ class DemoStocksController < ApplicationController
 
   def index
     user_companies = DemoCompany.where(user_id: current_user.id)
-    @stocks = Stock.where(demo_company_id: user_companies.pluck(:id))
+    @stocks = DemoStock.where(demo_company_id: user_companies.pluck(:id))
     if @stocks
       render json: @stocks
     else
@@ -12,7 +12,7 @@ class DemoStocksController < ApplicationController
   end
 
   def create
-    stock = Stock.new(stock_params)
+    stock = DemoStock.new(stock_params)
     if stock.save
       render json: stock, status: :created
     else
@@ -21,17 +21,16 @@ class DemoStocksController < ApplicationController
   end
 
   def show
-    @stock = Stock.find(params[:id])
-    @company_details = DemoCompany.find(@stock.company_id)
+    @stock = DemoStock.find(params[:id])
     if @stock
-      render json: @stock.merge(company: @company_details.as_json)
+      render json: @stock
     else
       render json: { errors: @stock.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   def update
-    stock = Stock.find(params[:id])
+    stock = DemoStock.find(params[:id])
     if stock.update(stock_params)
       render json: stock
     else
@@ -40,7 +39,7 @@ class DemoStocksController < ApplicationController
   end
 
   def destroy
-    stock = Stock.find_by(id: params[:id])
+    stock = DemoStock.find_by(id: params[:id])
     if stock.destroy
       head :ok
     else
@@ -51,6 +50,6 @@ class DemoStocksController < ApplicationController
   private
 
   def stock_params
-    params.permit(:category, :brand_name, :model_number, :stock_name, :product_qty, :buy_price, :sell_price, :gst_number, :company_id)
+    params.permit(:category, :brand_name, :model_number, :stock_name, :product_qty, :buy_price, :sell_price, :gst_number, :demo_company_id)
   end
 end

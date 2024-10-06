@@ -26,7 +26,7 @@ class SectorMastersController < ApplicationController
   def show
     @sector = SectorMaster.find(params[:id])
     if @sector
-      render json: @sector
+      render json: SectorMasterSerializer.new(@sector).serializable_hash[:data][:attributes]
     else
       render json: { errors: @sector.errors.full_messages }, status: :unprocessable_entity
     end
