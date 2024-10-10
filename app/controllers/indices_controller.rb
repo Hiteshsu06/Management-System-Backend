@@ -40,7 +40,7 @@ class IndicesController < ApplicationController
   def show
     @index_data = Index.find(params[:id])
     if @index_data
-      render json: @index_data
+      render json: IndexSerializer.new(@index_data).serializable_hash[:data][:attributes]
     else
       render json: { errors: @index_data.errors.full_messages }, status: :unprocessable_entity
     end
