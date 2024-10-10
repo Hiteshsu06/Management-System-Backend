@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   resources :stocks
   resources :sector_masters
   resources :indices
+
+  # Custom Routes
+  get 'countries/list', to: 'indices#get_all_countries_list'
 end

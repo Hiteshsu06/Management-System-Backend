@@ -31,6 +31,7 @@ gem "jsonapi-serializer", "~> 2.2"
 gem "rack-cors"
 gem 'devise', '~> 4.9', '>= 4.9.3'
 gem 'devise-jwt'
+gem 'list_of_countries'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

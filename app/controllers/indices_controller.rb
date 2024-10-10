@@ -13,6 +13,21 @@ class IndicesController < ApplicationController
     end
   end
 
+  def get_all_countries_list
+    @countries = ListOfCountries.countries
+    if @countries
+      @countries_data = @countries.map do |country|
+        {
+          name: country.name.common,   # Access the common name using the name method
+          region: country.region       # Access the region directly
+        }
+      end
+      render json: @countries_data
+    else
+      render json: { errors: "List of coutries currently unavailable" }, status: :unprocessable_entity
+    end
+  end
+
   def create
     index_data = Index.new(index_params.merge(user_id: current_user.id))
     if index_data.save
