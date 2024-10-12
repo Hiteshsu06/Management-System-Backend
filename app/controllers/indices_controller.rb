@@ -2,12 +2,20 @@ class IndicesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @indices = Index.where(user_id: current_user.id)
-    if @indices
-      indices_data = @indices.map do |index_data|
+    @indices_domestic_data = Index.where(user_id: current_user.id, category_id: 0)
+    @indices_international_data = Index.where(user_id: current_user.id, category_id: 1)
+    if @indices_domestic_data && @indices_international_data
+      indices_domestic_data = @indices_domestic_data.map do |index_data|
         IndexSerializer.new(index_data).serializable_hash[:data][:attributes]
       end
-      render json: indices_data
+      indices_international_data = @indices_international_data.map do |index_data|
+        IndexSerializer.new(index_data).serializable_hash[:data][:attributes]
+      end
+      render json: 
+        { data: { 
+            domestic_data: indices_domestic_data, 
+            international_data: indices_international_data
+        }}
     else
       render json: { errors: @indices.errors.full_messages }, status: :unprocessable_entity
     end
@@ -31,7 +39,7 @@ class IndicesController < ApplicationController
   def create
     index_data = Index.new(index_params.merge(user_id: current_user.id))
     if index_data.save
-      render json: index_data, status: :created
+      render json: { data: index_data, message: 'Index has been successfully created'}, status: :created
     else
       render json: { errors: index_data.errors.full_messages }, status: :unprocessable_entity
     end
@@ -49,7 +57,7 @@ class IndicesController < ApplicationController
   def update
     index_data = Index.find(params[:id])
     if index_data.update(index_params)
-      render json: index_data
+      render json: { data: index_data, message: 'Index has been successfully updated'}
     else
       render json: { errors: index_data.errors.full_messages }, status: :unprocessable_entity
     end

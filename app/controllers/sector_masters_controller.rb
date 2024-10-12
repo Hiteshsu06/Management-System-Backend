@@ -17,7 +17,7 @@ class SectorMastersController < ApplicationController
   def create
     sector = SectorMaster.new(sector_params.merge(user_id: current_user.id))
     if sector.save
-      render json: sector, status: :created
+      render json: { data: sector, message: 'Sector has been successfully created'}, status: :created
     else
       render json: { errors: sector.errors.full_messages }, status: :unprocessable_entity
     end
@@ -35,7 +35,7 @@ class SectorMastersController < ApplicationController
   def update
     sector = SectorMaster.find(params[:id])
     if sector.update(sector_params)
-      render json: sector
+      render json: { data: sector, message: 'Sector has been successfully updated'}
     else
       render json: { errors: sector.errors.full_messages }, status: :unprocessable_entity
     end

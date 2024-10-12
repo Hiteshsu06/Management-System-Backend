@@ -15,9 +15,9 @@ class StocksController < ApplicationController
   end
 
   def create
-    sector = Stock.new(stock_params.merge(user_id: current_user.id))
+    stock = Stock.new(stock_params.merge(user_id: current_user.id))
     if stock.save
-      render json: stock, status: :created
+      render json: { data: stock, message: 'Stock has been successfully created'}, status: :created
     else
       render json: { errors: stock.errors.full_messages }, status: :unprocessable_entity
     end
@@ -26,7 +26,7 @@ class StocksController < ApplicationController
   def show
     @stock = Stock.find(params[:id])
     if @stock
-      render json: @stock
+      render json: StockSerializer.new(@stock).serializable_hash[:data][:attributes]
     else
       render json: { errors: @stock.errors.full_messages }, status: :unprocessable_entity
     end
@@ -35,7 +35,7 @@ class StocksController < ApplicationController
   def update
     stock = Stock.find(params[:id])
     if stock.update(stock_params)
-      render json: stock
+      render json: { data: stock, message: 'Stock has been successfully updated'}
     else
       render json: { errors: stock.errors.full_messages }, status: :unprocessable_entity
     end

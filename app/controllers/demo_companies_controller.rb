@@ -13,7 +13,7 @@ class DemoCompaniesController < ApplicationController
   def create
     company = DemoCompany.new(company_params.merge(user_id: current_user.id))
     if company.save
-      render json: company, status: :created
+      render json: { data: company, message: 'Company has been successfully created'}, status: :created
     else
       render json: { errors: company.errors.full_messages }, status: :unprocessable_entity
     end
@@ -31,7 +31,7 @@ class DemoCompaniesController < ApplicationController
   def update
     company = DemoCompany.find(params[:id])
     if company.update(company_params)
-      render json: company
+      render json: { data: company, message: 'Company has been successfully updated'}
     else
       render json: { errors: company.errors.full_messages }, status: :unprocessable_entity
     end

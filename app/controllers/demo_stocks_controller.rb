@@ -14,7 +14,7 @@ class DemoStocksController < ApplicationController
   def create
     stock = DemoStock.new(stock_params)
     if stock.save
-      render json: stock, status: :created
+      render json: { data: stock, message: 'Stock has been successfully created'} , status: :created
     else
       render json: { errors: stock.errors.full_messages }, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class DemoStocksController < ApplicationController
   def update
     stock = DemoStock.find(params[:id])
     if stock.update(stock_params)
-      render json: stock
+      render json: { data: stock, message: 'Stock has been successfully updated'}
     else
       render json: { errors: stock.errors.full_messages }, status: :unprocessable_entity
     end
