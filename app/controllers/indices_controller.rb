@@ -24,8 +24,9 @@ class IndicesController < ApplicationController
   def get_all_countries_list
     @countries = ListOfCountries.countries
     if @countries
-      @countries_data = @countries.map do |country|
+      @countries_data = @countries.each_with_index.map do |country, index|
         {
+          id: index,
           name: country.name.common,   # Access the common name using the name method
           region: country.region       # Access the region directly
         }
