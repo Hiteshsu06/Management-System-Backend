@@ -50,6 +50,14 @@ class StocksController < ApplicationController
     end
   end
 
+  def export_stocks_report
+    @stocks = Stock.where(user_id: current_user.id)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @stocks.as_csv, filename: "stocks-#{Date.today}.csv" }
+    end
+  end
+
   private
 
   def stock_params

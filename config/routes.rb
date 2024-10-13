@@ -12,4 +12,7 @@ Rails.application.routes.draw do
 
   # Custom Routes
   get 'countries/list', to: 'indices#get_all_countries_list'
+  get 'sectors/export-report', to: 'sector_masters#export_sector_report', defaults: { format: 'csv' }
+  get 'indices/export-report', to: 'indices#export_indices_report', defaults: { format: 'csv' }
+  get 'stocks/export-report', to: 'stocks#export_stocks_report', defaults: { format: 'csv' }
 end

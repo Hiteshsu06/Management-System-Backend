@@ -50,6 +50,14 @@ class SectorMastersController < ApplicationController
     end
   end
 
+  def export_sector_report
+    @sectors = SectorMaster.where(user_id: current_user.id)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @sectors.as_csv, filename: "sectors-#{Date.today}.csv" }
+    end
+  end
+
   private
 
   def sector_params

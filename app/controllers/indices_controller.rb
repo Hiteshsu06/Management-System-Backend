@@ -72,6 +72,14 @@ class IndicesController < ApplicationController
     end
   end
 
+  def export_indices_report
+    @indices = Index.where(user_id: current_user.id)
+    respond_to do |format|
+      format.html
+      format.csv { send_data @indices.as_csv, filename: "indices-#{Date.today}.csv" }
+    end
+  end
+
   private
 
   def index_params
