@@ -4,6 +4,7 @@ class DemoCompaniesController < ApplicationController
   def index
     @companies = DemoCompany.where(user_id: current_user.id)
     if @companies
+      UserMailer.welcome_email('Hitesh').deliver_now
       render json: @companies
     else
       render json: { errors: @companies.errors.full_messages }, status: :unprocessable_entity
