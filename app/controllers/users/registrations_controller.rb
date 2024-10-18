@@ -5,6 +5,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
   def respond_with(resource, _opts = {})
     if request.method == "POST" && resource.persisted?
+      UserMailer.welcome_email(resource).deliver_now
       render json: {
         message: "Signed up sucessfully.",
         data: resource

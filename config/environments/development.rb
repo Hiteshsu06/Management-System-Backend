@@ -5,14 +5,17 @@ Rails.application.routes.default_url_options = {
 }
 
 Rails.application.configure do
-
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = {from: 'http://localhost:3000'}
+  
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:         'smtp.gmail.com',
     port:            587,
-    domain:          'http://localhost:3000',
-    user_name:       'hiteshsukhpal03@gmail.com',
-    password:        'pqyjjvgkzdpijayk',
+    domain:          'localhost:3000',
+    user_name:       ENV['SMTP_USERNAME'],
+    password:        ENV['SMTP_APP_PASSWORD'],
     authentication:  'plain',
     enable_starttls: true 
   }
@@ -48,7 +51,7 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # config.action_mailer.raise_delivery_errors = false
 
   # Disable caching for Action Mailer templates even if Action Controller
   # caching is enabled.
