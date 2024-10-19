@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    passwords: 'users/passwords'
   }
   # Custom Routes
   get 'countries/list', to: 'indices#get_all_countries_list'
