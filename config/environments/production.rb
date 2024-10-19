@@ -6,13 +6,17 @@ Rails.application.routes.default_url_options = {
 
 Rails.application.configure do
 
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = {from: 'https://management-system-backend-94z3.onrender.com'}
+
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:         'smtp.gmail.com',
     port:            587,
-    domain:          'https://management-system-backend-94z3.onrender.com',
-    user_name:       'hiteshsukhpal03@gmail.com',
-    password:        'pqyjjvgkzdpijayk',
+    domain:          'management-system-backend-94z3.onrender.com',
+    user_name:       ENV['SMTP_USERNAME'],
+    password:        ENV['SMTP_APP_PASSWORD'],
     authentication:  'plain',
     enable_starttls: true 
   }
