@@ -35,6 +35,10 @@ class Stock < ApplicationRecord
         end
     end
 
+    def sector
+        SectorMaster.find(sector_masters_id)
+    end
+
     def stock_short_term_chart_url
         Rails.application.routes.url_helpers.url_for(stock_short_term_chart) if stock_short_term_chart.attached?
     end
@@ -54,4 +58,6 @@ class Stock < ApplicationRecord
             end
         end
     end
+
+    belongs_to :sector_master, optional: true
 end

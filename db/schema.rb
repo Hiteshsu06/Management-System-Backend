@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_06_091558) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_20_060025) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -91,6 +91,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_06_091558) do
     t.string "name"
     t.string "price"
     t.integer "user_id"
+    t.bigint "sector_masters_id"
+    t.index ["sector_masters_id"], name: "index_stocks_on_sector_masters_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -111,4 +113,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_06_091558) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "demo_companies", "users"
   add_foreign_key "demo_stocks", "demo_companies"
+  add_foreign_key "stocks", "sector_masters", column: "sector_masters_id"
 end

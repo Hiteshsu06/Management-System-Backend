@@ -54,4 +54,6 @@ class SectorMaster < ApplicationRecord
             end
         end
     end
+
+    has_many :user
 end

@@ -32,6 +32,18 @@ class StocksController < ApplicationController
     end
   end
 
+  def get_all_stocks_by_sector
+    @stocks = Stock.where(sector_masters_id: params[:id])
+    if @stocks
+      stocks_data = @stocks.map do |stock|
+        StockSerializer.new(stock).serializable_hash[:data][:attributes]
+      end
+      render json: stocks_data
+    else
+      render json: { errors: @sector.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def update
     stock = Stock.find(params[:id])
     if stock.update(stock_params)
@@ -61,6 +73,6 @@ class StocksController < ApplicationController
   private
 
   def stock_params
-    params.permit(:name, :price, :stock_short_term_chart, :stock_long_term_chart)
+    params.permit(:name, :price, :stock_short_term_chart, :stock_long_term_chart, :sector_masters_id)
   end
 end

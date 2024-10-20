@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'sectors/export-report', to: 'sector_masters#export_sector_report', defaults: { format: 'csv' }
   get 'indices/export-report', to: 'indices#export_indices_report', defaults: { format: 'csv' }
   get 'stocks/export-report', to: 'stocks#export_stocks_report', defaults: { format: 'csv' }
-
+  get 'sectors/stocks/:id', to: 'stocks#get_all_stocks_by_sector'
 
   resources :demo_companies
   resources :demo_stocks
