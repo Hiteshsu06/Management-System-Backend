@@ -1,8 +1,22 @@
 class SectorMastersController < ApplicationController
   before_action :authenticate_user!
+  before_action -> { authorize_role(ROLES[:ADMIN], ROLES[:SUPER_ADMIN]) }
 
   def index
     @sectors = SectorMaster.where(user_id: current_user.id)
+    if @sectors
+      sectors_data = @sectors.map do |sector|
+        SectorMasterSerializer.new(sector).serializable_hash[:data][:attributes]
+      end
+      
+      render json: sectors_data
+    else
+      render json: { errors: @sectors.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def filter
+    @sectors = SectorMaster.where(user_id: current_user.id).where("name ILIKE ?", "%#{params[:search]}%")
     if @sectors
       sectors_data = @sectors.map do |sector|
         SectorMasterSerializer.new(sector).serializable_hash[:data][:attributes]

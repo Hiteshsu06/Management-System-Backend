@@ -1,8 +1,22 @@
 class StocksController < ApplicationController
   before_action :authenticate_user!
+  before_action -> { authorize_role(ROLES[:ADMIN], ROLES[:SUPER_ADMIN]) }
 
   def index
     @stocks = Stock.where(user_id: current_user.id)
+    if @stocks
+      stocks_data = @stocks.map do |stock|
+        StockSerializer.new(stock).serializable_hash[:data][:attributes]
+      end
+      
+      render json: stocks_data
+    else
+      render json: { errors: @stocks.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def filter
+    @stocks = Stock.where(user_id: current_user.id).where("name ILIKE ?", "%#{params[:search]}%")
     if @stocks
       stocks_data = @stocks.map do |stock|
         StockSerializer.new(stock).serializable_hash[:data][:attributes]

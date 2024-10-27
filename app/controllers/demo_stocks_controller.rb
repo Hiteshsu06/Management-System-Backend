@@ -1,9 +1,21 @@
 class DemoStocksController < ApplicationController
   before_action :authenticate_user!
+  before_action -> { authorize_role(ROLES[:VIEWER], ROLES[:SUPER_ADMIN]) }
 
   def index
     user_companies = DemoCompany.where(user_id: current_user.id)
     @stocks = DemoStock.where(demo_company_id: user_companies.pluck(:id))
+    if @stocks
+      render json: @stocks
+    else
+      render json: { errors: @stocks.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def filter
+    @stocks = DemoStock.joins(:demo_company)
+    .where(demo_companies: { user_id: current_user.id })
+    .where("demo_stocks.category ILIKE ?", "%#{params[:search]}%")
     if @stocks
       render json: @stocks
     else

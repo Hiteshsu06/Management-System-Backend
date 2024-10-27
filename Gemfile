@@ -35,6 +35,9 @@ gem 'list_of_countries'
 gem 'byebug'
 gem 'csv', '~> 3.0'
 gem 'dotenv-rails', '~> 2.1', '>= 2.1.1'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-google-oauth2'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

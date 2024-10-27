@@ -4,6 +4,6 @@ class DemoCompany < ApplicationRecord
     validates :contact_number, presence: true, numericality: { only_integer: true }
     validates :gst_number, presence: true
     validates :gst_number, uniqueness: { scope: :user_id, message: "has already been taken by you" }
-    has_many :demo_stock, dependent: :destroy
+    has_many :demo_stocks, dependent: :destroy
     belongs_to :user
 end

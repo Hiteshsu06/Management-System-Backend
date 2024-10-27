@@ -1,8 +1,18 @@
 class DemoCompaniesController < ApplicationController
   before_action :authenticate_user!
+  before_action -> { authorize_role(ROLES[:VIEWER], ROLES[:SUPER_ADMIN]) }
 
   def index
     @companies = DemoCompany.where(user_id: current_user.id)
+    if @companies
+      render json: @companies
+    else
+      render json: { errors: @companies.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def filter
+    @companies = DemoCompany.where(user_id: current_user.id).where("name ILIKE ?", "%#{params[:search]}%")
     if @companies
       render json: @companies
     else

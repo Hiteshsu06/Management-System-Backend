@@ -305,6 +305,19 @@ Devise.setup do |config|
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
 
+  #For google login
+  config.omniauth :google_oauth2,
+  Rails.application.credentials[:google_app_id],
+  Rails.application.credentials[:google_app_secret],
+  { scope: 'userinfo.email, userinfo.profile', skip_jwt: true }
+
+  #For facebook login
+  config.omniauth :facebook,
+  Rails.application.credentials[:facebook_app_id],
+  Rails.application.credentials[:facebook_app_secret],
+  scope: 'public_profile,email'
+
+
   # ==> Configuration for :registerable
 
   # When set to false, does not sign a user in automatically after their password is

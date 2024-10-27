@@ -1,9 +1,30 @@
 class IndicesController < ApplicationController
   before_action :authenticate_user!
+  before_action -> { authorize_role(ROLES[:ADMIN], ROLES[:SUPER_ADMIN]) }
 
   def index
     @indices_domestic_data = Index.where(user_id: current_user.id, category_id: 0)
     @indices_international_data = Index.where(user_id: current_user.id, category_id: 1)
+    if @indices_domestic_data && @indices_international_data
+      indices_domestic_data = @indices_domestic_data.map do |index_data|
+        IndexSerializer.new(index_data).serializable_hash[:data][:attributes]
+      end
+      indices_international_data = @indices_international_data.map do |index_data|
+        IndexSerializer.new(index_data).serializable_hash[:data][:attributes]
+      end
+      render json: 
+        { data: { 
+            domestic_data: indices_domestic_data, 
+            international_data: indices_international_data
+        }}
+    else
+      render json: { errors: @indices.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def filter
+    @indices_domestic_data = Index.where(user_id: current_user.id, category_id: 0).where("name ILIKE ?", "%#{params[:search]}%")
+    @indices_international_data = Index.where(user_id: current_user.id, category_id: 1).where("name ILIKE ?", "%#{params[:search]}%")
     if @indices_domestic_data && @indices_international_data
       indices_domestic_data = @indices_domestic_data.map do |index_data|
         IndexSerializer.new(index_data).serializable_hash[:data][:attributes]

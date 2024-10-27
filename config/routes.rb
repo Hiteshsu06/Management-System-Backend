@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
-    passwords: 'users/passwords'
+    passwords: 'users/passwords',
+    omniauth_callbacks: 'users/omniauth_callbacks'
   }
   # Custom Routes
   get 'countries/list', to: 'indices#get_all_countries_list'
@@ -10,11 +11,35 @@ Rails.application.routes.draw do
   get 'indices/export-report', to: 'indices#export_indices_report', defaults: { format: 'csv' }
   get 'stocks/export-report', to: 'stocks#export_stocks_report', defaults: { format: 'csv' }
   get 'sectors/stocks/:id', to: 'stocks#get_all_stocks_by_sector'
+  get 'users/:id', to: 'user_credentials#show'
 
-  resources :demo_companies
-  resources :demo_stocks
-  
-  resources :stocks
-  resources :sector_masters
-  resources :indices
+  resources :demo_companies do
+    collection do
+      post :filter
+    end
+  end
+
+  resources :demo_stocks do
+    collection do
+      post :filter
+    end
+  end
+
+  resources :stocks do
+    collection do
+      post :filter
+    end
+  end
+
+  resources :sector_masters do
+    collection do
+      post :filter
+    end
+  end
+
+  resources :indices do
+    collection do
+      post :filter
+    end
+  end
 end
