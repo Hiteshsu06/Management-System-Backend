@@ -268,11 +268,6 @@ Devise.setup do |config|
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
-  # ==> OmniAuth
-  # Add a new OmniAuth provider. Check the wiki for more information on setting
-  # up on your models and hooks.
-  # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
@@ -304,19 +299,6 @@ Devise.setup do |config|
   # Note: These might become the new default in future versions of Devise.
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
-
-  #For google login
-  config.omniauth :google_oauth2,
-  Rails.application.credentials[:google_app_id],
-  Rails.application.credentials[:google_app_secret],
-  { scope: 'userinfo.email, userinfo.profile', skip_jwt: true }
-
-  #For facebook login
-  config.omniauth :facebook,
-  Rails.application.credentials[:facebook_app_id],
-  Rails.application.credentials[:facebook_app_secret],
-  scope: 'public_profile,email'
-
 
   # ==> Configuration for :registerable
 

@@ -4,8 +4,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :jwt_authenticatable, :omniauthable,
-         omniauth_providers: %i[google_oauth2 facebook],
+         :jwt_authenticatable,
           jwt_revocation_strategy: self
   # has_one_attached :profile_image
   has_many :companies, dependent: :destroy

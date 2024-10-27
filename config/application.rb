@@ -28,12 +28,6 @@ module ManagementSystemBackend
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
     
-    config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
-
-    # Enable sessions for OmniAuth only
-    config.session_store :cookie_store, key: '_your_app_session'
-    config.api_only = true #
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
