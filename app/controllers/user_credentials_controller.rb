@@ -20,7 +20,7 @@ class UserCredentialsController < ApplicationController
 
     def update_role
       user = User.find(params[:id])
-      if user.update(role: user_params[:role])
+      if user.update(role: params[:role])
         render json: { data: user, message: 'User role has been successfully updated' }
       else
         render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
@@ -30,15 +30,24 @@ class UserCredentialsController < ApplicationController
     def show
         @user = User.find(params[:id])
         if @user
-          render json: @user
+          render json: UserSerializer.new(@user).serializable_hash[:data][:attributes]
         else
           render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end
     end
 
+    def update_user
+      user = User.find(params[:id])
+      if user.update(user_params)
+        render json: { data: user, message: 'User has been successfully updated'}
+      else
+        render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def user_params
-      params.permit(:role)
+      params.permit(:first_name, :last_name, :full_address, :gender, :profile_image)
     end
 end

@@ -10,10 +10,12 @@ Rails.application.routes.draw do
   get 'indices/export-report', to: 'indices#export_indices_report', defaults: { format: 'csv' }
   get 'stocks/export-report', to: 'stocks#export_stocks_report', defaults: { format: 'csv' }
   get 'sectors/stocks/:id', to: 'stocks#get_all_stocks_by_sector'
+
   get 'users/:id', to: 'user_credentials#show'
   post 'users/filter', to: 'user_credentials#filter'
   delete 'users/:id', to: 'user_credentials#destroy'
   post 'users/role-update/:id', to: 'user_credentials#update_role'
+  put 'users/update_user/:id', to: 'user_credentials#update_user'
   
   resources :demo_companies do
     collection do

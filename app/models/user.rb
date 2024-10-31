@@ -6,7 +6,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable,
           jwt_revocation_strategy: self
-  # has_one_attached :profile_image
   has_many :demo_companies, dependent: :destroy
 
   def self.signin_or_create_from_provider(provider_data)
@@ -15,6 +14,11 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0, 20]
       user.skip_confirmation! # when you signup a new user, you can decide to skip confirmation
     end
+  end
+
+  has_one_attached :profile_image
+  def profile_image_url
+    Rails.application.routes.url_helpers.url_for(profile_image) if profile_image.attached?
   end
 
 end
