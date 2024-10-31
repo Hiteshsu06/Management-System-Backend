@@ -11,7 +11,10 @@ Rails.application.routes.draw do
   get 'stocks/export-report', to: 'stocks#export_stocks_report', defaults: { format: 'csv' }
   get 'sectors/stocks/:id', to: 'stocks#get_all_stocks_by_sector'
   get 'users/:id', to: 'user_credentials#show'
-
+  post 'users/filter', to: 'user_credentials#filter'
+  delete 'users/:id', to: 'user_credentials#destroy'
+  post 'users/role-update/:id', to: 'user_credentials#update_role'
+  
   resources :demo_companies do
     collection do
       post :filter

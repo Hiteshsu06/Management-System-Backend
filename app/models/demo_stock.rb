@@ -7,6 +7,5 @@ class DemoStock < ApplicationRecord
     validates :buy_price, presence: true, numericality: { only_integer: true }
     validates :sell_price, presence: true, numericality: { only_integer: true }
     validates :gst_number, presence: true
-    validates :gst_number, uniqueness: { message: "has already been taken by you" }
     belongs_to :demo_company
 end
